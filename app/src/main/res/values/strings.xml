@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">VCCon</string>
+    <string name="text_accounts">Lista de usuários </string>
+    <string name="hint_name">Nome</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Senha</string>
+    <string name="hint_confirm_password">Confirme sua senha</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Registrar</string>
+    <string name="error_message_name">Digite seu nome</string>
+    <string name="error_message_email">Email é obrigatório</string>
+    <string name="error_message_age">Digite sua idade</string>
+    <string name="error_message_password">Digite sua senha</string>
+    <string name="success_message">Registrado com sucesso!</string>
+    <string name="text_not_member">Cadastre-se aqui!</string>
+    <string name="text_already_member">Já é cadastrado? Entrar!</string>
+    <string name="error_email_exists">Email já cadastrado!</string>
+    <string name="error_password_match">Senhas estão diferentes</string>
+    <string name="error_valid_email_password">Email ou senha incorretos</string>
+    <string name="action_settings">Configurações</string>
+    <string name="text_hello">Olá,</string>
+    <string name="text_title">VCCondomínios</string>
+    <string name="text_dados">Meus dados</string>
+    <string name="text_animal">Meus animais</string>
+    <string name="text_morador">Moradores da casa</string>
+    <string name="text_veiculo">Meus veículos</string>
+    <string name="text_nome_condominio">Nome do condomínio</string>
+    <string name="text_numero_residencia">Número da residência</string>
+    <string name="text_telefone">Telefone</string>
+    <string name="text_update">Salvar</string>
+    <string name="tipo">Espécie</string>
+    <string name="text_placa">Placa</string>
+    <string name="text_marca">Marca</string>
+    <string name="text_modelo">Modelo</string>
+    <string name="text_cor">Cor</string>
+    <string name="text_parentesco">Parentesco</string>
+</resources>
