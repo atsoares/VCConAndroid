@@ -176,7 +176,7 @@ public class VeiculoListMenu extends AppCompatActivity implements View.OnClickLi
 
     private void initDialog(){
         alertDialog = new AlertDialog.Builder(this);
-        view = getLayoutInflater().inflate(R.layout.dialog_animal_layout,null);
+        view = getLayoutInflater().inflate(R.layout.dialog_veiculo_layout,null);
         alertDialog.setView(view);
         alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
