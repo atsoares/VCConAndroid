@@ -7,7 +7,7 @@ package br.com.alexandersoares.vccon.model;
 public class Morador {
 
     private int id;
-    private Usuario user_id;
+    private String user_id;
     private String name;
     private String parentesco;
 
@@ -23,7 +23,7 @@ public class Morador {
         super();
     }
 
-    public Morador(String name, String parentesco, Usuario user_id) {
+    public Morador(String name, String parentesco, String user_id) {
         super();
         this.name = name;
         this.parentesco = parentesco;
@@ -46,4 +46,11 @@ public class Morador {
         this.parentesco = parentesco;
     }
 
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 }

@@ -8,7 +8,15 @@
     <string name="text_login">Login</string>
     <string name="text_register">Registrar</string>
     <string name="error_message_name">Digite seu nome</string>
+    <string name="error_message_name_animal">Nome do animal é obrigatorio</string>
+    <string name="error_message_name_morador">Nome do morador é obrigatorio</string>
     <string name="error_message_email">Email é obrigatório</string>
+    <string name="error_message_tipo">Espécie é obrigatório</string>
+    <string name="error_message_placa">Placa é obrigatório</string>
+    <string name="error_message_cor">Cor é obrigatório</string>
+    <string name="error_message_marca">Marca é obrigatório</string>
+    <string name="error_message_modelo">Modelo é obrigatório</string>
+    <string name="error_message_parentesco">Parentesco é obrigatório</string>
     <string name="error_message_age">Digite sua idade</string>
     <string name="error_message_password">Digite sua senha</string>
     <string name="success_message">Registrado com sucesso!</string>
@@ -28,6 +36,7 @@
     <string name="text_numero_residencia">Número da residência</string>
     <string name="text_telefone">Telefone</string>
     <string name="text_update">Salvar</string>
+    <string name="text_delete">Excluir</string>
     <string name="tipo">Espécie</string>
     <string name="text_placa">Placa</string>
     <string name="text_marca">Marca</string>

@@ -13,7 +13,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -27,9 +26,14 @@
             android:name=".activities.AnimalListMenu"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.VeiculoListMenu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MoradorListMenu"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.MeusDadosMenu"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.AddAnimalActivity"></activity>
     </application>
 
 </manifest>

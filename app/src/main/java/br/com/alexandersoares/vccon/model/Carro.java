@@ -7,7 +7,7 @@ package br.com.alexandersoares.vccon.model;
 public class Carro {
 
     private int id;
-    private Usuario user_id;
+    private String user_id;
     private String placa;
     private String marca;
     private String modelo;
@@ -25,7 +25,7 @@ public class Carro {
         super();
     }
 
-    public Carro(String placa, String marca, String modelo, String cor, Usuario user_id) {
+    public Carro(String placa, String marca, String modelo, String cor, String user_id) {
         super();
         this.placa = placa;
         this.marca = marca;
@@ -71,4 +71,11 @@ public class Carro {
         return placa + " " +  modelo + " " + marca;
     }
 
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 }

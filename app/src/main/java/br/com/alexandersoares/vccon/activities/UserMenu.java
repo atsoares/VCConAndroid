@@ -78,37 +78,35 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
 
     public void onClick(View v) {
         String idFromIntent = getIntent().getStringExtra("ID");
+        String emailFromIntent = getIntent().getStringExtra("EMAIL");
         switch (v.getId()) {
             case R.id.appCompatButtonDados:
                 Intent intentDados = new Intent(getApplicationContext(), MeusDadosMenu.class);
-                intentDados.putExtra("ID", idFromIntent);
+                intentDados.putExtra("USER_ID", idFromIntent);
                 startActivity(intentDados);
                 break;
 
             case R.id.appCompatButtonAnimais:
                 Intent intentAnimais = new Intent(getApplicationContext(), AnimalListMenu.class);
-                intentAnimais.putExtra("ID", idFromIntent);
+                intentAnimais.putExtra("USER_ID", idFromIntent);
+                intentAnimais.putExtra("EMAIL", emailFromIntent);
                 startActivity(intentAnimais);
                 break;
 
             case R.id.appCompatButtonMoradores:
 
                 Intent intentMoradores = new Intent(getApplicationContext(), AnimalListMenu.class);
-                intentMoradores.putExtra("ID", idFromIntent);
+                intentMoradores.putExtra("USER_ID", idFromIntent);
                 startActivity(intentMoradores);
                 break;
 
             case R.id.appCompatButtonVeiculos:
-                Intent intentVeiculos = new Intent(getApplicationContext(), AnimalListMenu.class);
-                intentVeiculos.putExtra("ID", idFromIntent);
+                Intent intentVeiculos = new Intent(getApplicationContext(), VeiculoListMenu.class);
+                intentVeiculos.putExtra("USER_ID", idFromIntent);
+                intentVeiculos.putExtra("EMAIL", emailFromIntent);
                 startActivity(intentVeiculos);
                 break;
 
-            case R.id.textViewLinkRegister:
-                Intent intentHome = new Intent(getApplicationContext(), RegisterActivity.class);
-                intentHome.putExtra("ID", idFromIntent);
-                startActivity(intentHome);
-                break;
         }
     }
 

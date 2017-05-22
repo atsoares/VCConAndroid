@@ -21,7 +21,7 @@ import br.com.alexandersoares.vccon.model.Usuario;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Database Name
     private static final String DATABASE_NAME = "UserManager.db";
@@ -412,11 +412,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param animal
      */
-    public void addAnimal(Animal animal, String id) {
+    public void addAnimal(Animal animal) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID, id);
+        values.put(COLUMN_USER_ID, animal.getUser_id());
         values.put(COLUMN_ANIMAL_NAME, animal.getName());
         values.put(COLUMN_ANIMAL_TIPO, animal.getTipo());
 
@@ -536,15 +536,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return animalList;
     }
 
+    public Animal getAnimal(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Animal animal = new Animal();
+
+        String[] columns = {
+                COLUMN_ANIMAL_NAME,
+                COLUMN_ANIMAL_TIPO
+        };
+
+        String selection = COLUMN_ANIMAL_ID + " = ?";
+
+        Cursor cursor = db.query(TABLE_ANIMAL, columns, selection,
+                new String[] { String.valueOf(id) }, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                animal.setName(cursor.getString(cursor.getColumnIndex(COLUMN_ANIMAL_NAME)));
+                animal.setTipo(cursor.getString(cursor.getColumnIndex(COLUMN_ANIMAL_TIPO)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return contact
+        return animal;
+    }
+
     /**
      * This method to update user record
      *
-     * @param animal
+     * @param
      */
     public void updateAnimal(Animal animal) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
+        values.put(COLUMN_USER_ID, animal.getUser_id());
         values.put(COLUMN_ANIMAL_NAME, animal.getName());
         values.put(COLUMN_ANIMAL_TIPO, animal.getTipo());
 
@@ -557,39 +586,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method is to delete user record
      *
-     * @param animal
+     * @param
      */
-    public void deleteAnimal(Animal animal) {
+    public void deleteAnimal(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         // delete user record by id
         db.delete(TABLE_ANIMAL, COLUMN_ANIMAL_ID + " = ?",
-                new String[]{String.valueOf(animal.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
-    public boolean isTableExists(String tableName, boolean openDb) {
-        SQLiteDatabase db = getReadableDatabase();
-        if(openDb) {
-            if(db == null || !db.isOpen()) {
-                db = getReadableDatabase();
-            }
-
-            if(!db.isReadOnly()) {
-                db.close();
-                db = getReadableDatabase();
-            }
-        }
-
-        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
-        if(cursor!=null) {
-            if(cursor.getCount()>0) {
-                cursor.close();
-                return true;
-            }
-            cursor.close();
-        }
-        return false;
-    }
 
     /**
      * This method is to create morador record
@@ -600,12 +606,72 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, morador.getUser_id());
         values.put(COLUMN_MORADOR_NAME, morador.getName());
         values.put(COLUMN_MORADOR_PARENTESCO, morador.getParentesco());
 
         // Inserting Row
         db.insert(TABLE_MORADOR, null, values);
         db.close();
+    }
+
+    /**
+     * This method is to fetch all animals and return the list of animals records by ID
+     *
+     * @return list
+     */
+    public List<Morador> getAllMoradorByID(String user_id) {
+
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_MORADOR_ID,
+                COLUMN_MORADOR_NAME,
+                COLUMN_MORADOR_PARENTESCO
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_MORADOR_NAME + " ASC";
+        List<Morador> moradorList = new ArrayList<Morador>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        // selection criteria
+        String selection = COLUMN_USER_ID + " = ?";
+
+        // selection argument
+        String[] selectionArgs = {user_id};
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+
+        Cursor cursor = db.query(TABLE_MORADOR, //Table to query
+                columns,                    //columns to return
+                selection,                  //columns for the WHERE clause
+                selectionArgs,              //The values for the WHERE clause
+                null,                       //group the rows
+                null,                      //filter by row groups
+                sortOrder);                      //The sort order
+
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Morador morador = new Morador();
+                morador.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_ID))));
+                morador.setName(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_NAME)));
+                morador.setParentesco(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_PARENTESCO)));
+                // Adding animal record to list
+                moradorList.add(morador);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return moradorList;
     }
 
     /**
@@ -661,64 +727,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * This method is to fetch all animals and return the list of animals records by ID
-     *
-     * @return list
-     */
-    public List<Morador> getAllMoradorByID(String user_id) {
-        // array of columns to fetch
-        String[] columns = {
-                COLUMN_MORADOR_ID,
-                COLUMN_MORADOR_PARENTESCO,
-                COLUMN_MORADOR_NAME
-        };
-        // sorting orders
-        String sortOrder =
-                COLUMN_MORADOR_NAME + " ASC";
-        List<Morador> moradorList = new ArrayList<Morador>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        // selection criteria
-        String selection = COLUMN_USER_ID + " = ?";
-
-        // selection argument
-        String[] selectionArgs = {user_id};
-        // query the user table
-        /**
-         * Here query function is used to fetch records from user table this function works like we use sql query.
-         * SQL query equivalent to this query function is
-         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
-         */
-
-        Cursor cursor = db.query(TABLE_MORADOR, //Table to query
-                columns,                    //columns to return
-                selection,                  //columns for the WHERE clause
-                selectionArgs,              //The values for the WHERE clause
-                null,                       //group the rows
-                null,                      //filter by row groups
-                sortOrder);                      //The sort order
-
-
-
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Morador morador = new Morador();
-                morador.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_ID))));
-                morador.setName(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_NAME)));
-                morador.setParentesco(cursor.getString(cursor.getColumnIndex(COLUMN_MORADOR_PARENTESCO)));
-                // Adding morador record to list
-                moradorList.add(morador);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        // return morador list
-        return moradorList;
-    }
-
-    /**
      * This method to update morador record
      *
      * @param morador
@@ -758,6 +766,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, carro.getUser_id());
         values.put(COLUMN_CARRO_PLACA, carro.getPlaca());
         values.put(COLUMN_CARRO_MARCA, carro.getMarca());
         values.put(COLUMN_CARRO_MODELO, carro.getModelo());
@@ -825,6 +834,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * This method is to fetch all animals and return the list of animals records by ID
+     *
+     * @return list
+     */
+    public List<Carro> getAllCarroByID(String user_id) {
+        // array of columns to fetch
+        String[] columns = {
+                COLUMN_CARRO_ID,
+                COLUMN_CARRO_PLACA,
+                COLUMN_CARRO_MARCA,
+                COLUMN_CARRO_MODELO,
+                COLUMN_CARRO_COR
+        };
+        // sorting orders
+        String sortOrder =
+                COLUMN_CARRO_PLACA + " ASC";
+        List<Carro> carroList = new ArrayList<Carro>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        // selection criteria
+        String selection = COLUMN_USER_ID + " = ?";
+
+        // selection argument
+        String[] selectionArgs = {user_id};
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+
+        Cursor cursor = db.query(TABLE_CARRO, //Table to query
+                columns,                    //columns to return
+                selection,                  //columns for the WHERE clause
+                selectionArgs,              //The values for the WHERE clause
+                null,                       //group the rows
+                null,                      //filter by row groups
+                sortOrder);                      //The sort order
+
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {Carro carro = new Carro();
+                carro.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(COLUMN_CARRO_ID))));
+                carro.setPlaca(cursor.getString(cursor.getColumnIndex(COLUMN_CARRO_PLACA)));
+                carro.setMarca(cursor.getString(cursor.getColumnIndex(COLUMN_CARRO_MARCA)));
+                carro.setModelo(cursor.getString(cursor.getColumnIndex(COLUMN_CARRO_MODELO)));
+                carro.setCor(cursor.getString(cursor.getColumnIndex(COLUMN_CARRO_COR)));
+                // Adding morador record to list
+                carroList.add(carro);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return morador list
+        return carroList;
+    }
+
+    /**
      * This method to update carro record
      *
      * @param carro
@@ -847,13 +917,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method is to delete user record
      *
-     * @param carro
+     * @param
      */
-    public void deleteCarro(Carro carro) {
+    public void deleteCarro(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         // delete user record by id
         db.delete(TABLE_CARRO, COLUMN_CARRO_ID + " = ?",
-                new String[]{String.valueOf(carro.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 

@@ -18,10 +18,10 @@ import br.com.alexandersoares.vccon.model.Morador;
 
 public class MoradoresRecyclerAdapter extends RecyclerView.Adapter<MoradoresRecyclerAdapter.MoradorViewHolder> {
 
-    private List<Morador> listUsers;
+    private List<Morador> listMoradores;
 
-    public MoradoresRecyclerAdapter(List<Morador> listUsers) {
-        this.listUsers = listUsers;
+    public MoradoresRecyclerAdapter(List<Morador> listMoradores) {
+        this.listMoradores = listMoradores;
     }
 
     @Override
@@ -35,16 +35,32 @@ public class MoradoresRecyclerAdapter extends RecyclerView.Adapter<MoradoresRecy
 
     @Override
     public void onBindViewHolder(MoradorViewHolder holder, int position) {
-        holder.textViewName.setText(listUsers.get(position).getName());
-        holder.textViewParentesco.setText(listUsers.get(position).getParentesco());
+        holder.textViewName.setText(listMoradores.get(position).getName());
+        holder.textViewParentesco.setText(listMoradores.get(position).getParentesco());
     }
 
     @Override
     public int getItemCount() {
-        Log.v(MoradoresRecyclerAdapter.class.getSimpleName(),""+listUsers.size());
-        return listUsers.size();
+        Log.v(MoradoresRecyclerAdapter.class.getSimpleName(),""+listMoradores.size());
+        return listMoradores.size();
     }
 
+    public void add(Morador morador){
+        listMoradores.add(morador);
+        notifyItemInserted(listMoradores.size());
+    }
+
+    public void addAll(List<Morador> listMoradores) {
+        for (Morador morador : listMoradores) {
+            add(morador);
+        }
+    }
+
+    public void removeItem(int position) {
+        listMoradores.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listMoradores.size());
+    }
 
     /**
      * ViewHolder class

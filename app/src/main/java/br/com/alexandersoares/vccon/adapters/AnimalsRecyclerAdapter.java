@@ -34,16 +34,43 @@ public class AnimalsRecyclerAdapter extends RecyclerView.Adapter<AnimalsRecycler
     }
 
     @Override
-    public void onBindViewHolder(AnimalViewHolder holder, int position) {
+    public void onBindViewHolder(final AnimalViewHolder holder, final int position) {
+
         holder.textViewName.setText(listAnimals.get(position).getName());
         holder.textViewTipo.setText(listAnimals.get(position).getTipo());
+
     }
+
+    public void add(Animal animal){
+        listAnimals.add(animal);
+        notifyItemInserted(listAnimals.size());
+    }
+
+    public void addAll(List<Animal> listAnimals) {
+        for (Animal animal : listAnimals) {
+            add(animal);
+        }
+    }
+
+    public void removeItem(int position) {
+        listAnimals.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listAnimals.size());
+    }
+
+    public void clear() {
+        listAnimals.clear();
+    }
+
+
 
     @Override
     public int getItemCount() {
         Log.v(AnimalsRecyclerAdapter.class.getSimpleName(),""+ listAnimals.size());
         return listAnimals.size();
     }
+
+
 
 
     /**
@@ -58,8 +85,10 @@ public class AnimalsRecyclerAdapter extends RecyclerView.Adapter<AnimalsRecycler
             super(view);
             textViewName = (AppCompatTextView) view.findViewById(R.id.textViewName);
             textViewTipo = (AppCompatTextView) view.findViewById(R.id.textViewTipo);
+
         }
     }
+
 
 
 }

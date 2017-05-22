@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="br.com.alexandersoares.vccon.activities.MoradorListMenu">
 
-
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayoutCompat">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:clickable="true"
-            android:src="@drawable/ic_people"
-            />
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:paddingTop="20dp"
-            android:text="@string/text_morador"
-            android:textSize="30dp"
-            android:textColor="@android:color/black" />
-
-    </android.support.v7.widget.LinearLayoutCompat>
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_action_add" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewMoradores"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -138,7 +140,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             } else {
                 // Snack Bar to show success message that record is wrong
-                Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG);
+                ViewGroup group = (ViewGroup) snackbar.getView();
+                group.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+                snackbar.show();
             }
         }
 

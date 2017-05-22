@@ -38,13 +38,30 @@ public class CarrosRecyclerAdapter extends RecyclerView.Adapter<CarrosRecyclerAd
         holder.textViewPlaca.setText(listCarros.get(position).getPlaca());
         holder.textViewMarca.setText(listCarros.get(position).getMarca());
         holder.textViewModelo.setText(listCarros.get(position).getModelo());
-        holder.textViewCor.setText(listCarros.get(position).getCor()    );
+        holder.textViewCor.setText(listCarros.get(position).getCor());
     }
 
     @Override
     public int getItemCount() {
         Log.v(CarrosRecyclerAdapter.class.getSimpleName(),""+ listCarros.size());
         return listCarros.size();
+    }
+
+    public void add(Carro carro){
+        listCarros.add(carro);
+        notifyItemInserted(listCarros.size());
+    }
+
+    public void addAll(List<Carro> listCarros) {
+        for (Carro carro : listCarros) {
+            add(carro);
+        }
+    }
+
+    public void removeItem(int position) {
+        listCarros.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listCarros.size());
     }
 
 
