@@ -129,13 +129,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String nome = databaseHelper.getUserByEmail(textInputEditTextEmail.getText().toString().trim());
                 String id = databaseHelper.getUserIdByEmail(textInputEditTextEmail.getText().toString().trim());
 
+                Usuario usuario = databaseHelper.getUsuario(id);
+
+                System.out.println(id);
+                System.out.print(id);
+
+
                 Intent accountsIntent = new Intent(activity, UserMenu.class);
                 accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
+                accountsIntent.putExtra("CONDOMINIO", usuario.getCondominio());
+                accountsIntent.putExtra("NUMERO", usuario.getNumero());
                 accountsIntent.putExtra("NOME", nome);
                 accountsIntent.putExtra("ID", id);
 
+
                 emptyInputEditText();
                 startActivity(accountsIntent);
+                finish();
 
 
             } else {

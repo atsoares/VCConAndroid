@@ -8,6 +8,8 @@
     <string name="text_login">Login</string>
     <string name="text_register">Registrar</string>
     <string name="error_message_name">Digite seu nome</string>
+    <string name="error_message_condominio">Digite o nome do condomínio</string>
+    <string name="error_message_numero">Digite o número e o bloco da residencia</string>
     <string name="error_message_name_animal">Nome do animal é obrigatorio</string>
     <string name="error_message_name_morador">Nome do morador é obrigatorio</string>
     <string name="error_message_email">Email é obrigatório</string>
@@ -32,8 +34,8 @@
     <string name="text_animal">Meus animais</string>
     <string name="text_morador">Moradores da casa</string>
     <string name="text_veiculo">Meus veículos</string>
-    <string name="text_nome_condominio">Nome do condomínio</string>
-    <string name="text_numero_residencia">Número da residência</string>
+    <string name="text_nome_condominio">Condomínio</string>
+    <string name="text_numero_residencia">Nº(Bloco)</string>
     <string name="text_telefone">Telefone</string>
     <string name="text_update">Salvar</string>
     <string name="text_delete">Excluir</string>

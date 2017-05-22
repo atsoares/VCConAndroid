@@ -7,6 +7,8 @@ public class Usuario {
 
     private int id;
     private String name;
+    private String condominio;
+    private String numero;
     private String email;
     private String password;
 
@@ -42,4 +44,19 @@ public class Usuario {
         this.password = password;
     }
 
+    public String getCondominio() {
+        return condominio;
+    }
+
+    public void setCondominio(String condominio) {
+        this.condominio = condominio;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
 }

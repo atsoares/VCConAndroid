@@ -128,6 +128,7 @@ public class VeiculoListMenu extends AppCompatActivity implements View.OnClickLi
                     removeView();
                     edit_position = position;
                     alertDialog.setTitle("Editar veículo");
+                    textInputEditTextPlaca.setTag(listCarros.get(position).getId());
                     textInputEditTextPlaca.setText(listCarros.get(position).getPlaca());
                     textInputEditTextMarca.setText(listCarros.get(position).getMarca());
                     textInputEditTextModelo.setText(listCarros.get(position).getModelo());
@@ -178,7 +179,7 @@ public class VeiculoListMenu extends AppCompatActivity implements View.OnClickLi
         alertDialog = new AlertDialog.Builder(this);
         view = getLayoutInflater().inflate(R.layout.dialog_veiculo_layout,null);
         alertDialog.setView(view);
-        alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Carro carro = new Carro();
@@ -202,7 +203,14 @@ public class VeiculoListMenu extends AppCompatActivity implements View.OnClickLi
                     carro.setCor(textInputEditTextCor.getText().toString());
                     carro.setUser_id(getIntent().getStringExtra("USER_ID"));
 
-                    databaseHelper.updateCarro(carro);
+                    String placa = carro.getPlaca();
+                    String marca = carro.getMarca();
+                    String modelo = carro.getModelo();
+                    String cor = carro.getCor();
+                    String userId = carro.getUser_id();
+                    String id = textInputEditTextPlaca.getTag().toString();
+
+                    databaseHelper.updateCarro(id, placa, marca, modelo, cor, userId);
 
                     listCarros.set(edit_position,carro);
                     veiculosRecyclerAdapter.notifyDataSetChanged();

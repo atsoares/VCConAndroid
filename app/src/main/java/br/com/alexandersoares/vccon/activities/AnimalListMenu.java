@@ -123,6 +123,7 @@ public class AnimalListMenu extends AppCompatActivity implements View.OnClickLis
                     removeView();
                     edit_position = position;
                     alertDialog.setTitle("Editar animal");
+                    textInputEditTextName.setTag(listAnimals.get(position).getId());
                     textInputEditTextName.setText(listAnimals.get(position).getName());
                     textInputEditTextTipo.setText(listAnimals.get(position).getTipo());
                     alertDialog.show();
@@ -171,7 +172,7 @@ public class AnimalListMenu extends AppCompatActivity implements View.OnClickLis
         alertDialog = new AlertDialog.Builder(this);
         view = getLayoutInflater().inflate(R.layout.dialog_animal_layout,null);
         alertDialog.setView(view);
-        alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Animal animal = new Animal();
@@ -191,8 +192,12 @@ public class AnimalListMenu extends AppCompatActivity implements View.OnClickLis
                     animal.setTipo(textInputEditTextTipo.getText().toString());
                     animal.setUser_id(getIntent().getStringExtra("USER_ID"));
 
+                    String nome = animal.getName();
+                    String tipo = animal.getTipo();
+                    String userId = animal.getUser_id();
+                    String id = textInputEditTextName.getTag().toString();
 
-                    databaseHelper.updateAnimal(animal);
+                    databaseHelper.updateAnimal(id, nome, tipo, userId);
 
                     listAnimals.set(edit_position,animal);
                     animalsRecyclerAdapter.notifyDataSetChanged();

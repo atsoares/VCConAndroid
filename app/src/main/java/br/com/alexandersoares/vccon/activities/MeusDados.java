@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandersoares.vccon.R;
@@ -23,11 +20,12 @@ import static br.com.alexandersoares.vccon.R.id.textViewLinkRegister;
  * Created by alexl on 10/05/2017.
  */
 
-public class MeusDadosMenu extends AppCompatActivity {
+public class MeusDados extends AppCompatActivity {
 
-    private AppCompatActivity activity = MeusDadosMenu.this;
+    private AppCompatActivity activity = MeusDados.this;
     private AppCompatTextView textViewName;
-    private RecyclerView recyclerViewUsers;
+    private AppCompatTextView textViewCondominioName;
+    private AppCompatTextView textViewNumeroCasa;
     private List<Usuario> listUsers;
     private UsersRecyclerAdapter usersRecyclerAdapter;
     private DatabaseHelper databaseHelper;
@@ -50,26 +48,18 @@ public class MeusDadosMenu extends AppCompatActivity {
      */
     private void initViews() {
         textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
-        //recyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
+        textViewCondominioName = (AppCompatTextView) findViewById(R.id.textViewCondominioName);
+        textViewNumeroCasa = (AppCompatTextView) findViewById(R.id.textViewNumeroCasa);
     }
 
     /**
      * This method is to initialize objects to be used
      */
     private void initObjects() {
-        listUsers = new ArrayList<>();
-        usersRecyclerAdapter = new UsersRecyclerAdapter(listUsers);
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        //recyclerViewUsers.setLayoutManager(mLayoutManager);
-        //recyclerViewUsers.setItemAnimator(new DefaultItemAnimator());
-        //recyclerViewUsers.setHasFixedSize(true);
-        //recyclerViewUsers.setAdapter(usersRecyclerAdapter);
         databaseHelper = new DatabaseHelper(activity);
 
         String nomeFromIntent = getIntent().getStringExtra("NOME");
         textViewName.setText(nomeFromIntent);
-
 
 
         getDataFromSQLite();

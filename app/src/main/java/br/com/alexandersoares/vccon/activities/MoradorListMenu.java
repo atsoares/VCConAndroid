@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.alexandersoares.vccon.R;
-import br.com.alexandersoares.vccon.adapters.AnimalsRecyclerAdapter;
-import br.com.alexandersoares.vccon.model.Animal;
+import br.com.alexandersoares.vccon.adapters.MoradoresRecyclerAdapter;
+import br.com.alexandersoares.vccon.model.Morador;
 import br.com.alexandersoares.vccon.sql.DatabaseHelper;
 
 /**
@@ -37,24 +37,25 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
 
     private AppCompatActivity activity = MoradorListMenu.this;
     private TextView textViewName;
-    private TextView textViewTipo;
+    private TextView textViewParentesco;
     private EditText textInputEditTextName;
-    private EditText textInputEditTextTipo;
+    private EditText textInputEditTextParentesco;
+    private EditText textInputEditTextId;
     private int edit_position;
     private View view;
     private boolean add = false;
     private Paint p = new Paint();
-    private RecyclerView recyclerViewAnimais;
+    private RecyclerView recyclerViewMoradores;
     private AlertDialog.Builder alertDialog;
-    private List<Animal> listAnimals;
-    private AnimalsRecyclerAdapter animalsRecyclerAdapter;
+    private List<Morador> listMoradores;
+    private MoradoresRecyclerAdapter moradoresRecyclerAdapter;
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meus_animais);
-        getSupportActionBar().setTitle("Meus animais");
+        setContentView(R.layout.activity_moradores_da_casa);
+        getSupportActionBar().setTitle("Moradores");
 
         initViews();
 
@@ -66,23 +67,23 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
      * This method is to initialize views
      */
     private void initViews() {
-        recyclerViewAnimais = (RecyclerView) findViewById(R.id.recyclerViewAnimais);
+        recyclerViewMoradores = (RecyclerView) findViewById(R.id.recyclerViewMoradores);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
         textViewName = (TextView) findViewById(R.id.textViewName);
-        textViewTipo = (TextView) findViewById(R.id.textViewTipo);
+        textViewParentesco = (TextView) findViewById(R.id.textViewParentesco);
 
-        listAnimals  = new ArrayList<>();
-        animalsRecyclerAdapter = new AnimalsRecyclerAdapter(listAnimals);
+        listMoradores = new ArrayList<>();
+        moradoresRecyclerAdapter = new MoradoresRecyclerAdapter(listMoradores);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewAnimais.setLayoutManager(mLayoutManager);
-        recyclerViewAnimais.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewAnimais.setHasFixedSize(true);
-        recyclerViewAnimais.setAdapter(animalsRecyclerAdapter);
+        recyclerViewMoradores.setLayoutManager(mLayoutManager);
+        recyclerViewMoradores.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewMoradores.setHasFixedSize(true);
+        recyclerViewMoradores.setAdapter(moradoresRecyclerAdapter);
 
-        animalsRecyclerAdapter.notifyDataSetChanged();
+        moradoresRecyclerAdapter.notifyDataSetChanged();
 
         String user_id = getIntent().getStringExtra("USER_ID");
 
@@ -116,15 +117,16 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT){
-                    databaseHelper.deleteAnimal(listAnimals.get(position).getId());
-                    animalsRecyclerAdapter.removeItem(position);
+                    databaseHelper.deleteMorador(listMoradores.get(position).getId());
+                    moradoresRecyclerAdapter.removeItem(position);
 
                 } else {
                     removeView();
                     edit_position = position;
-                    alertDialog.setTitle("Editar animal");
-                    textInputEditTextName.setText(listAnimals.get(position).getName());
-                    textInputEditTextTipo.setText(listAnimals.get(position).getTipo());
+                    alertDialog.setTitle("Editar morador");
+                    textInputEditTextName.setTag(listMoradores.get(position).getId());
+                    textInputEditTextName.setText(listMoradores.get(position).getName());
+                    textInputEditTextParentesco.setText(listMoradores.get(position).getParentesco());
                     alertDialog.show();
                 }
             }
@@ -159,7 +161,7 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerViewAnimais);
+        itemTouchHelper.attachToRecyclerView(recyclerViewMoradores);
     }
     private void removeView(){
         if(view.getParent()!=null) {
@@ -169,33 +171,37 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
 
     private void initDialog(){
         alertDialog = new AlertDialog.Builder(this);
-        view = getLayoutInflater().inflate(R.layout.dialog_animal_layout,null);
+        view = getLayoutInflater().inflate(R.layout.dialog_morador_layout,null);
         alertDialog.setView(view);
-        alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Animal animal = new Animal();
+                Morador morador = new Morador();
                 if(add){
                     add = false;
 
-                    animal.setName(textInputEditTextName.getText().toString());
-                    animal.setTipo(textInputEditTextTipo.getText().toString());
-                    animal.setUser_id(getIntent().getStringExtra("USER_ID"));
+                    morador.setName(textInputEditTextName.getText().toString());
+                    morador.setParentesco(textInputEditTextParentesco.getText().toString());
+                    morador.setUser_id(getIntent().getStringExtra("USER_ID"));
 
-                    animalsRecyclerAdapter.add(animal);
-                    databaseHelper.addAnimal(animal);
+                    moradoresRecyclerAdapter.add(morador);
+                    databaseHelper.addMorador(morador);
                     dialog.dismiss();
                 } else {
 
-                    animal.setName(textInputEditTextName.getText().toString());
-                    animal.setTipo(textInputEditTextTipo.getText().toString());
-                    animal.setUser_id(getIntent().getStringExtra("USER_ID"));
+                    morador.setName(textInputEditTextName.getText().toString());
+                    morador.setParentesco(textInputEditTextParentesco.getText().toString());
+                    morador.setUser_id(getIntent().getStringExtra("USER_ID"));
 
+                    String nome = morador.getName();
+                    String parentesco = morador.getParentesco();
+                    String userId = morador.getUser_id();
+                    String id = textInputEditTextName.getTag().toString();
 
-                    databaseHelper.updateAnimal(animal);
+                    databaseHelper.updateMorador(id, nome, parentesco, userId);
 
-                    listAnimals.set(edit_position,animal);
-                    animalsRecyclerAdapter.notifyDataSetChanged();
+                    listMoradores.set(edit_position,morador);
+                    moradoresRecyclerAdapter.notifyDataSetChanged();
 
                     dialog.dismiss();
                 }
@@ -203,7 +209,7 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
             }
         });
         textInputEditTextName = (EditText)view.findViewById(R.id.textInputEditTextName);
-        textInputEditTextTipo = (EditText)view.findViewById(R.id.textInputEditTextTipo);
+        textInputEditTextParentesco = (EditText)view.findViewById(R.id.textInputEditTextParentesco);
     }
 
     @Override
@@ -213,9 +219,9 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
             case R.id.fab:
                 removeView();
                 add = true;
-                alertDialog.setTitle("Adicionar animal");
+                alertDialog.setTitle("Adicionar morador");
                 textInputEditTextName.setText("");
-                textInputEditTextTipo.setText("");
+                textInputEditTextParentesco.setText("");
                 alertDialog.show();
                 break;
         }
@@ -224,7 +230,7 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
     public boolean checkList(){
 
         String user_id = getIntent().getStringExtra("USER_ID");
-        List<Animal> getAll = databaseHelper.getAllAnimalByID(user_id);
+        List<Morador> getAll = databaseHelper.getAllMoradorByID(user_id);
         if(getAll.isEmpty()){
             return false;
         }else {
@@ -235,8 +241,8 @@ public class MoradorListMenu extends AppCompatActivity implements View.OnClickLi
     public void popular(){
 
         String user_id = getIntent().getStringExtra("USER_ID");
-        List<Animal> getAll = databaseHelper.getAllAnimalByID(user_id);
-        animalsRecyclerAdapter.addAll(getAll);
+        List<Morador> getAll = databaseHelper.getAllMoradorByID(user_id);
+        moradoresRecyclerAdapter.addAll(getAll);
 
     }
 

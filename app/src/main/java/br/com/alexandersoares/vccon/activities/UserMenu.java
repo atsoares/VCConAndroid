@@ -8,11 +8,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
-import java.util.List;
-
 import br.com.alexandersoares.vccon.R;
-import br.com.alexandersoares.vccon.adapters.UsersRecyclerAdapter;
-import br.com.alexandersoares.vccon.model.Usuario;
 import br.com.alexandersoares.vccon.sql.DatabaseHelper;
 
 /**
@@ -27,8 +23,8 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
     private AppCompatButton appCompatButtonMoradores;
     private AppCompatButton appCompatButtonVeiculos;
     private AppCompatTextView textViewName;
-    private List<Usuario> listUsers;
-    private UsersRecyclerAdapter usersRecyclerAdapter;
+    private AppCompatTextView textViewCondominioName;
+    private AppCompatTextView textViewNumeroCasa;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -36,6 +32,7 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_menu);
         getSupportActionBar().setTitle("Informações pessoais");
+
         initViews();
         initListeners();
         initObjects();
@@ -47,11 +44,13 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
      */
     private void initViews() {
         textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
+        textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
+        textViewCondominioName = (AppCompatTextView) findViewById(R.id.textViewCondominioName);
+        textViewNumeroCasa = (AppCompatTextView) findViewById(R.id.textViewNumeroCasa);
         appCompatButtonDados = (AppCompatButton) findViewById(R.id.appCompatButtonDados);
         appCompatButtonAnimais = (AppCompatButton) findViewById(R.id.appCompatButtonAnimais);
         appCompatButtonMoradores = (AppCompatButton) findViewById(R.id.appCompatButtonMoradores);
         appCompatButtonVeiculos = (AppCompatButton) findViewById(R.id.appCompatButtonVeiculos);
-        //recyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
     }
 
     /**
@@ -72,7 +71,12 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
         databaseHelper = new DatabaseHelper(activity);
 
         String nomeFromIntent = getIntent().getStringExtra("NOME");
+        String condominioFromIntent = getIntent().getStringExtra("CONDOMINIO");
+        String numeroFromIntent = getIntent().getStringExtra("NUMERO");
         textViewName.setText(nomeFromIntent);
+        textViewCondominioName.setText(condominioFromIntent);
+        textViewNumeroCasa.setText(numeroFromIntent);
+
 
     }
 
@@ -81,7 +85,7 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
         String emailFromIntent = getIntent().getStringExtra("EMAIL");
         switch (v.getId()) {
             case R.id.appCompatButtonDados:
-                Intent intentDados = new Intent(getApplicationContext(), MeusDadosMenu.class);
+                Intent intentDados = new Intent(getApplicationContext(), MeusDados.class);
                 intentDados.putExtra("USER_ID", idFromIntent);
                 startActivity(intentDados);
                 break;
@@ -95,8 +99,9 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
 
             case R.id.appCompatButtonMoradores:
 
-                Intent intentMoradores = new Intent(getApplicationContext(), AnimalListMenu.class);
+                Intent intentMoradores = new Intent(getApplicationContext(), MoradorListMenu.class);
                 intentMoradores.putExtra("USER_ID", idFromIntent);
+                intentMoradores.putExtra("EMAIL", emailFromIntent);
                 startActivity(intentMoradores);
                 break;
 
@@ -109,5 +114,16 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
+
 
 }

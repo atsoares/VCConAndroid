@@ -32,11 +32,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private TextInputLayout textInputLayoutConfirmPassword;
+    private TextInputLayout textInputLayoutNomeCondominio;
+    private TextInputLayout textInputLayoutNumeroResidencia;
 
     private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private TextInputEditText textInputEditTextConfirmPassword;
+    private TextInputEditText textInputEditTextCondominio;
+    private TextInputEditText textInputEditTextNumero;
 
     private AppCompatButton appCompatButtonRegister;
     private AppCompatTextView appCompatTextViewLoginLink;
@@ -66,11 +70,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
+        textInputLayoutNomeCondominio = (TextInputLayout) findViewById(R.id.textInputLayoutNomeCondominio);
+        textInputLayoutNumeroResidencia = (TextInputLayout) findViewById(R.id.textInputLayoutNumeroResidencia);
 
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
         textInputEditTextConfirmPassword = (TextInputEditText) findViewById(R.id.textInputEditTextConfirmPassword);
+        textInputEditTextCondominio = (TextInputEditText) findViewById(R.id.textInputEditTextCondominio);
+        textInputEditTextNumero = (TextInputEditText) findViewById(R.id.textInputEditTextNumero);
 
         appCompatButtonRegister = (AppCompatButton) findViewById(R.id.appCompatButtonRegister);
 
@@ -133,6 +141,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return;
         }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCondominio, textInputLayoutNomeCondominio, getString(R.string.error_message_condominio))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextNumero, textInputLayoutNumeroResidencia, getString(R.string.error_message_numero))) {
+            return;
+        }
+
+
         if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
                 textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
             return;
@@ -141,6 +157,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
 
             user.setName(textInputEditTextName.getText().toString().trim());
+            user.setCondominio(textInputEditTextCondominio.getText().toString().trim());
+            user.setNumero(textInputEditTextNumero.getText().toString().trim());
             user.setEmail(textInputEditTextEmail.getText().toString().trim());
             user.setPassword(textInputEditTextPassword.getText().toString().trim());
 
@@ -176,5 +194,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputEditTextEmail.setText(null);
         textInputEditTextPassword.setText(null);
         textInputEditTextConfirmPassword.setText(null);
+        textInputEditTextCondominio.setText(null);
+        textInputEditTextNumero.setText(null);
     }
 }

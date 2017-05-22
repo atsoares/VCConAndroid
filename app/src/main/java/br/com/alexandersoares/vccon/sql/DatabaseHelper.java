@@ -21,7 +21,7 @@ import br.com.alexandersoares.vccon.model.Usuario;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     // Database Name
     private static final String DATABASE_NAME = "UserManager.db";
@@ -32,12 +32,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // User Table Columns names
     private static final String COLUMN_USER_NAME = "user_name";
     private static final String COLUMN_USER_EMAIL = "user_email";
+    private static final String COLUMN_USER_CONDOMINIO = "user_condominio";
+    private static final String COLUMN_USER_NUMERO = "user_numero";
     private static final String COLUMN_USER_PASSWORD = "user_password";
 
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
             + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_USER_NAME + " TEXT,"
-            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT" + ")";
+            + COLUMN_USER_EMAIL + " TEXT," + COLUMN_USER_PASSWORD + " TEXT,"
+            + COLUMN_USER_CONDOMINIO + " TEXT," + COLUMN_USER_NUMERO + " TEXT" + ")";
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -137,6 +140,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_NAME, user.getName());
         values.put(COLUMN_USER_EMAIL, user.getEmail());
+        values.put(COLUMN_USER_CONDOMINIO, user.getCondominio());
+        values.put(COLUMN_USER_NUMERO, user.getNumero());
         values.put(COLUMN_USER_PASSWORD, user.getPassword());
 
         // Inserting Row
@@ -201,19 +206,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method to update user record
      *
-     * @param user
+     * @param
      */
-    public void updateUser(Usuario user) {
+    public void updateUser(String id, String nome, String condominio, String numero, String email, String senha) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, user.getName());
-        values.put(COLUMN_USER_EMAIL, user.getEmail());
-        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_NAME, nome);
+        values.put(COLUMN_USER_CONDOMINIO, condominio);
+        values.put(COLUMN_USER_NUMERO, numero);
+        values.put(COLUMN_USER_EMAIL, email);
+        values.put(COLUMN_USER_PASSWORD, senha);
 
         // updating row
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(user.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
@@ -280,6 +287,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Usuario getUsuario(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Usuario usuario = new Usuario();
+
+        String[] columns = {
+                COLUMN_USER_NAME,
+                COLUMN_USER_CONDOMINIO,
+                COLUMN_USER_NUMERO,
+                COLUMN_USER_EMAIL
+        };
+
+        String selection = COLUMN_USER_ID + " = ?";
+
+        Cursor cursor = db.query(TABLE_USER, columns, selection,
+                new String[] { String.valueOf(id) }, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                usuario.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+                usuario.setCondominio(cursor.getString(cursor.getColumnIndex(COLUMN_USER_CONDOMINIO)));
+                usuario.setNumero(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NUMERO)));
+                usuario.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        // return contact
+        return usuario;
+    }
+
     public String getUserIdByEmail(String email){
         // array of columns to fetch
         String[] columns = {
@@ -291,10 +329,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // selection criteria
-        String selection = COLUMN_USER_ID + " = ?";
+        String selection = COLUMN_USER_EMAIL + " = ?";
 
         // selection argument
-        String[] selectionArgs = {id};
+        String[] selectionArgs = {email};
 
         // query user table with condition
         /**
@@ -568,18 +606,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param
      */
-    public void updateAnimal(Animal animal) {
+    public void updateAnimal(String id, String nome, String tipo, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_USER_ID, animal.getUser_id());
-        values.put(COLUMN_ANIMAL_NAME, animal.getName());
-        values.put(COLUMN_ANIMAL_TIPO, animal.getTipo());
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_ANIMAL_NAME, nome);
+        values.put(COLUMN_ANIMAL_TIPO, tipo);
 
         // updating row
         db.update(TABLE_ANIMAL, values, COLUMN_ANIMAL_ID + " = ?",
-                new String[]{String.valueOf(animal.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
@@ -729,31 +767,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method to update morador record
      *
-     * @param morador
+     * @param
      */
-    public void updateMorador(Morador morador) {
+    public void updateMorador(String id, String nome, String parentesco, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MORADOR_NAME, morador.getName());
-        values.put(COLUMN_MORADOR_PARENTESCO, morador.getParentesco());
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_MORADOR_NAME, nome);
+        values.put(COLUMN_MORADOR_PARENTESCO, parentesco);
 
         // updating row
         db.update(TABLE_MORADOR, values, COLUMN_MORADOR_ID + " = ?",
-                new String[]{String.valueOf(morador.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
     /**
      * This method is to delete morador record
      *
-     * @param morador
+     * @param
      */
-    public void deleteMorador(Morador morador) {
+    public void deleteMorador(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         // delete morador record by id
         db.delete(TABLE_MORADOR, COLUMN_MORADOR_ID + " = ?",
-                new String[]{String.valueOf(morador.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
@@ -897,20 +936,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * This method to update carro record
      *
-     * @param carro
+     * @param
      */
-    public void updateCarro(Carro carro) {
+    public void updateCarro(String id, String placa, String marca, String modelo, String cor, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CARRO_PLACA, carro.getPlaca());
-        values.put(COLUMN_CARRO_MARCA, carro.getMarca());
-        values.put(COLUMN_CARRO_MODELO, carro.getModelo());
-        values.put(COLUMN_CARRO_COR, carro.getCor());
+        values.put(COLUMN_USER_ID, userId);
+        values.put(COLUMN_CARRO_PLACA, placa);
+        values.put(COLUMN_CARRO_MARCA, marca);
+        values.put(COLUMN_CARRO_MODELO, modelo);
+        values.put(COLUMN_CARRO_COR, cor);
 
         // updating row
         db.update(TABLE_CARRO, values, COLUMN_CARRO_ID + " = ?",
-                new String[]{String.valueOf(carro.getId())});
+                new String[]{String.valueOf(id)});
         db.close();
     }
 
