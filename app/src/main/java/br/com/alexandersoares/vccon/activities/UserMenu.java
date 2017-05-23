@@ -87,6 +87,7 @@ public class UserMenu extends AppCompatActivity implements View.OnClickListener{
             case R.id.appCompatButtonDados:
                 Intent intentDados = new Intent(getApplicationContext(), MeusDados.class);
                 intentDados.putExtra("USER_ID", idFromIntent);
+                intentDados.putExtra("EMAIL", emailFromIntent);
                 startActivity(intentDados);
                 break;
 

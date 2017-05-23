@@ -208,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param
      */
-    public void updateUser(String id, String nome, String condominio, String numero, String email, String senha) {
+    public void updateUser(String id, String nome, String condominio, String numero, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -216,7 +216,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_USER_CONDOMINIO, condominio);
         values.put(COLUMN_USER_NUMERO, numero);
         values.put(COLUMN_USER_EMAIL, email);
-        values.put(COLUMN_USER_PASSWORD, senha);
 
         // updating row
         db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?",

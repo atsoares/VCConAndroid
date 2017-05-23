@@ -45,4 +45,5 @@
     <string name="text_modelo">Modelo</string>
     <string name="text_cor">Cor</string>
     <string name="text_parentesco">Parentesco</string>
+    <string name="sucesso_update">Atualizado com sucesso</string>
 </resources>
